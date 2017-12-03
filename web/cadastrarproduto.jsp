@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login
-    Created on : 03/12/2017, 16:56:55
+    Document   : cadastrarproduto
+    Created on : 03/12/2017, 18:58:26
     Author     : Syane
 --%>
 <%@page import="java.sql.ResultSet"%>
@@ -17,7 +17,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%
+       <%
             Properties properties = new Properties();
             properties.put("user", "root");
             properties.put("password", "syane"); 
@@ -25,30 +25,23 @@
             
             try {
                 
-                String login = request.getParameter("login");
-                String senha = request.getParameter("senha");
-                
-                String consulta = "SELECT * FROM usuario WHERE login = ? AND senha = ?";
-                
-                PreparedStatement ps2 = connection.prepareStatement(consulta);
-                ps2.setString(1, login);
-                ps2.setString(2, senha);
-                ResultSet rs = ps2.executeQuery();
-                
-                if(rs.next()){ 
-                    session.setAttribute("id",rs.getInt("id"));
-                    session.setAttribute("login", rs.getString("login"));
-                    response.sendRedirect("leilao.jsp");
-                    ps2.close();
-                }
-                else{
-                    response.sendRedirect("home.jsp");
-                }
+                String descricao = request.getParameter("descricao");
+                String lance = request.getParameter("lance");
+                String status = request.getParameter("status");
+                    
+                String comando = "INSERT INTO leilao(descricao_produto,valorLance,status) VALUES(?,?,?)";
+                PreparedStatement ps = connection.prepareStatement(comando);
+                ps.setString(1, descricao);
+                ps.setString(2, lance);
+                ps.setString(3, status);
+                ps.execute();
+                ps.close();
             }
             
             finally {
                 connection.close();
             }
+            response.sendRedirect("leilao.jsp");
         %>
     </body>
 </html>

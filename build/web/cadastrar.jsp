@@ -1,8 +1,10 @@
 <%-- 
-    Document   : login
-    Created on : 03/12/2017, 16:56:55
-    Author     : Syane
+    Document   : cadastrar
+    Created on : 27/11/2017, 13:56:26
+    Author     : THIAGO
 --%>
+
+
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="com.mysql.jdbc.JDBC4Connection"%>
@@ -14,9 +16,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Cadastramento</title>
     </head>
     <body>
+        
         <%
             Properties properties = new Properties();
             properties.put("user", "root");
@@ -28,27 +31,33 @@
                 String login = request.getParameter("login");
                 String senha = request.getParameter("senha");
                 
-                String consulta = "SELECT * FROM usuario WHERE login = ? AND senha = ?";
+                String consulta = "SELECT login FROM usuario WHERE login = ?";
                 
+                Statement statement = connection.createStatement();
                 PreparedStatement ps2 = connection.prepareStatement(consulta);
                 ps2.setString(1, login);
-                ps2.setString(2, senha);
                 ResultSet rs = ps2.executeQuery();
                 
-                if(rs.next()){ 
-                    session.setAttribute("id",rs.getInt("id"));
-                    session.setAttribute("login", rs.getString("login"));
-                    response.sendRedirect("leilao.jsp");
-                    ps2.close();
+                if(!rs.next()){
+                    
+                    String comando = "INSERT INTO usuario(login,senha) VALUES(?,?)";
+                    PreparedStatement ps = connection.prepareStatement(comando);
+                    ps.setString(1, login);
+                    ps.setString(2, senha);
+                    ps.execute();
+                    ps.close();
+                    connection.close();
                 }
-                else{
-                    response.sendRedirect("home.jsp");
-                }
+                 
+//                statement.execute("");
             }
             
             finally {
                 connection.close();
             }
+            
+            response.sendRedirect("home.jsp");
         %>
+        
     </body>
 </html>

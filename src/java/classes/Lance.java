@@ -3,30 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes;
+package Classes;
 
 /**
  *
- * @author Syane
+ * @author THIAGO
  */
 public class Lance {
-    int id;
-    float valorLance;
-    Usuario pariticipante;
     
-    public int getId(){
-        return this.id;
+    private String id;
+    private float valorLance;
+    
+    public Lance(String id, float valorLance){
+        this.id=id;
+        this.valorLance=valorLance;
     }
     
-    public void setId(int id){
-        this.id = id;
-    }
-    
-    public void setValorLance(float valor){
-        this.valorLance = valor;
-    }
-    
-    public float getValorLance(){
-        return this.valorLance;
-    }
+    public String getId(){return this.id;}
+    public void setId(String id){this.id=id;}
+    public float getValorLance(){return valorLance;}
+    public void setValorLance(float valorLance){this.valorLance=valorLance;}
 }

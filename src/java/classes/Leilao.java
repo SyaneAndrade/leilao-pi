@@ -3,76 +3,50 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package classes;
+package Classes;
 
 import java.util.ArrayList;
 
 /**
  *
- * @author Syane
+ * @author THIAGO
  */
 public class Leilao {
-    int id;
-    String descricaoDoProduto;
-    float lanceminimo;
-    ArrayList<Lance> lances = new ArrayList<>();
-    boolean status;
-    float valorLance = 0;
     
-    public String getDescricaoDoProduto(){
-        return this.descricaoDoProduto;
+    private String descricao;
+    private float lanceMinimo;
+    private ArrayList<Lance> lances;
+    private boolean status;
+    private float valorLance;
+    
+    public Leilao(String descricao, float lanceMinimo){
+        lances=new ArrayList<>();
+        this.descricao=descricao;
+        this.lanceMinimo=lanceMinimo;
+        iniciar();
     }
     
-    public void setDescricaoDoProduto(String descricao){
-        this.descricaoDoProduto = descricao;
-    }
-    
-    public float getLanceMinimo(){
-        return this.lanceminimo;
-    }
-    
-    public void setLanceMinimo(float lancem){
-        this.lanceminimo = lancem;
-    }
-    
-    public ArrayList getLances(){
-        return this.lances;
-    }
-    
-    public void addLance(Lance e){
-        this.lances.add(e);
-    }
-    
-    public void iniciar(){
-        this.status = true;
-    }
-    
-    public void fechar(){
-        this.status = false;
-    }
-    
-    public void DarLance(Usuario usuario){
-        if((this.status == true)){
-            Lance lance = new Lance();
-            lance.id = 0;
-            lance.pariticipante = usuario;
-            if(valorLance == 0){
-                lance.valorLance = this.lanceminimo + 10;
-            }
-            else{
-                lance.valorLance = this.valorLance + 10;
-                this.valorLance = lance.valorLance;
-            }
-            this.addLance(lance);
-         }
-        else{
-            System.out.println("Lance não permitido!");
+    public void darLance(String id, float valorLance){
+        if(valorLance > this.lanceMinimo){
+            if(valorLance > this.valorLance)
+                this.valorLance = valorLance;
+            Lance l = new Lance(id,valorLance);
+            lances.add(l);
         }
     }
     
-    public void ListarLances(){
-        for(Lance e: this.lances){
-            System.out.println("Usuario: "+e.pariticipante.nome + "Valor: " + e.valorLance);
-        }
-    }
+    public void iniciar(){this.status=true;}
+    public void fechar(){this.status=false;}
+    
+    public String getDescricao(){return this.descricao;}
+    public void setDescricao(String descricao){this.descricao=descricao;}
+    public float getLanceMinimo(){return this.lanceMinimo;}
+    public void setLanceMinimo(float lanceMinimo){this.lanceMinimo=lanceMinimo;}
+    public boolean getStatus(){return this.status;}
+    public void setStatus(boolean status){this.status=status;}
+    public float getValorLance(){return this.valorLance;}
+    public void setValorLance(float valorLance){this.valorLance=valorLance;}
+    
+    
+    
 }
