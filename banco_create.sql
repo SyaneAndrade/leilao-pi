@@ -1,17 +1,6 @@
-CREATE SCHEMA leilao;
+CREATE SCHEMA `leilao`;
 
-USE leilao;
-
-CREATE TABLE `lance` (
-  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `valorlance` double DEFAULT NULL,
-  `id_participante_fk` smallint(5) unsigned NOT NULL,
-  `id_produto` int(11) NOT NULL,
-  PRIMARY KEY (`id`,`id_produto`),
-  KEY `id_participante_fk` (`id_participante_fk`),
-  CONSTRAINT `id_produto` FOREIGN KEY (`id`) REFERENCES `leilao` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `lance_ibfk_1` FOREIGN KEY (`id_participante_fk`) REFERENCES `usuario` (`id`)
-);
+USE `leilao`;
 
 CREATE TABLE `usuario` (
   `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
@@ -30,3 +19,14 @@ CREATE TABLE `leilao` (
   PRIMARY KEY (`id`)
 );
 
+
+
+CREATE TABLE `lance` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `valorlance` double DEFAULT NULL,
+  `id_participante_fk` smallint(5) unsigned NOT NULL,
+  `id_produto` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `id_produto` FOREIGN KEY (`id_produto`) REFERENCES `leilao` (`id`) ,
+   CONSTRAINT `id_participante_fk` FOREIGN KEY (`id_participante_fk`) REFERENCES `usuario` (`id`)
+)

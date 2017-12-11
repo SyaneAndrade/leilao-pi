@@ -25,19 +25,28 @@
             try {
                 
                 int numero = Integer.parseInt(request.getParameter("numero"));
-                Double valor = Double.parseDouble(request.getParameter("valor"));
                 
-                String comando = "UPDATE leilao SET valorLance = ? WHERE id= ? AND valorLance < ?";
-                PreparedStatement ps = connection.prepareStatement(comando);
-                ps.setDouble(1, valor);
+                String comando1 = "SELECT * FROM leilao WHERE id = ?";
+                PreparedStatement ps = connection.prepareStatement(comando1);
+                ps.setInt(1, numero);
+                ResultSet rs = ps.executeQuery();
+                //ps.close();
+                Double valor = 0.0;
+                while(rs.next()){
+                    valor = rs.getDouble("valorLance");
+                }
+                String comando = "UPDATE leilao SET valorLance = ? WHERE id= ?";
+                ps = connection.prepareStatement(comando);
                 ps.setInt(2, numero);
-                ps.setDouble(3, valor);
+                valor = valor + 10.0;
+                ps.setDouble(1, valor);
                 ps.execute();
                 comando = "INSERT INTO lance (valorlance, id_participante_fk,id_produto) VALUES(?,?,?)";
                 ps = connection.prepareStatement(comando);
                 ps.setDouble(1, valor);
                 ps.setInt(2, (Integer)session.getAttribute("id"));
                 ps.setInt(3, numero);
+                ps.execute();   
                 ps.close();
             }
             

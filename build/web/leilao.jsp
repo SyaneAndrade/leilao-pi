@@ -22,28 +22,35 @@
             properties.put("user", "root");
             properties.put("password", "syane"); 
             Connection connection = new JDBC4Connection("localhost", 3306, properties, "leilao", "");
-            
+            int a = (Integer)session.getAttribute("id");
             try {
                  
                 String consulta = "SELECT * FROM leilao";
                 
                 PreparedStatement ps = connection.prepareStatement(consulta);
                 ResultSet rs = ps.executeQuery();
-                
                 out.print("<table border=\"1\">"
-                        + "<thead><tr><th> Número </th>" +
+                        + "<thead><tr>"+
                             "<th> Descrição </th>"+
-                            "<th> Último Lance </th> </tr><thead>");
+                            "<th> Último Lance </th>"
+                        +   "<th>Dar Lance (+10)</th> </tr><thead>");
                 while(rs.next()){
                     if(rs.getInt("status") == 1){
-                    out.print("<tr>"  +
-                                "<td>" + rs.getInt("id")+"</td>" +
+                    out.print("<tr><form action=\"fazerLance.jsp\">"  +
                                 "<td>" + rs.getString("descricao_produto") +"</td>" +
-                                "<td>" +rs.getFloat("valorLance") + "</td>" +
-                            "</tr>");
+                                "<td>" +rs.getFloat("valorLance") + "</td>"
+                                + "<input type=\"hidden\" value="+rs.getInt("id")+" name=\"numero\">"
+                                + "<td><input type=\"submit\" value=\"Dar Lance\"></td>" +
+                            "</form>");
+                    if(a == 4){
+                        out.print("<form action=\"encerrarLeilao.jsp\">"+
+                            "<input type=\"hidden\" value="+rs.getInt("id")+" name=\"numero\">"+
+                            "<td><input type=\"submit\" value=\"Encerrar\"></td>"+
+                            "</form></tr>");
                     }
-                out.print("</table>");
+                    }
                 }
+                out.print("</table>");
                 ps.close();
             }
             
@@ -51,16 +58,39 @@
     
                 connection.close();
             }
-            int a = (Integer)session.getAttribute("id");
             if(a == 4){
                 out.print("<form action = \"produto.jsp\">" +
                            "<input type=\"submit\" value =\"Cadastrar Produto\">" +
                            "</form>");
             }
+
             %>
             <form action="lance.jsp">
                 <input type="submit" value="Lance">
             </form>
+            <script>
+                function lance(int n){
+                    Properties properties = new Properties();
+                    properties.put("user", "admin");
+                    properties.put("password", "1234"); 
+                    Connection connection = new JDBC4Connection("localhost", 3306, properties, "leilao", "");
+                    
+                    try{
+                        
+                        String sql = "UPDATE leilao SET valorLance=valorLance+10 WHERE id = n"
+                        Statement statement = connection.createStatement();
+                        PreparedStatement ps2 = connection.prepareStatement(consulta);
+                        ps2.executeQuery();
+                        
+                    }
+                    finally{
+                        connection.close();
+                    }
+                    
+                    response.sendRedirect("leilao.jsp");
+                    
+                }
+            </script>
             <form action="logout.jsp">
                 <input type="submit" value="Logout">
             </form>
