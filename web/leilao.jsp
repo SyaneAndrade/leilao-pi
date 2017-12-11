@@ -65,32 +65,6 @@
             }
 
             %>
-            <form action="lance.jsp">
-                <input type="submit" value="Lance">
-            </form>
-            <script>
-                function lance(int n){
-                    Properties properties = new Properties();
-                    properties.put("user", "admin");
-                    properties.put("password", "1234"); 
-                    Connection connection = new JDBC4Connection("localhost", 3306, properties, "leilao", "");
-                    
-                    try{
-                        
-                        String sql = "UPDATE leilao SET valorLance=valorLance+10 WHERE id = n"
-                        Statement statement = connection.createStatement();
-                        PreparedStatement ps2 = connection.prepareStatement(consulta);
-                        ps2.executeQuery();
-                        
-                    }
-                    finally{
-                        connection.close();
-                    }
-                    
-                    response.sendRedirect("leilao.jsp");
-                    
-                }
-            </script>
             <form action="logout.jsp">
                 <input type="submit" value="Logout">
             </form>
